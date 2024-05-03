@@ -7,27 +7,29 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 from time import sleep
 
-def main():
-    try:
-        service_ = FirefoxService(GeckoDriverManager().install())
-        options = webdriver.FirefoxOptions()
-        options.add_argument('--private-window')
-        driver = webdriver.Firefox(service=service_, options=options)
+class Simple:
+    def __init__(self):
+        self.Service = FirefoxService(GeckoDriverManager().install())
+        self.Options = webdriver.FirefoxOptions()
+        self.Driver  = webdriver.Firefox(service=self.Service, options=self.Options)
+        self.Domain  = 'https://www.google.com'
 
-        domain = "https://www.google.com"
-    
-        driver.get(domain)
+    def init(self):
+        try: 
+            self.Options.add_argument('--private-window') 
+            self.Driver.get(self.Domain)
 
-        sleep(3)
-        input_search = '//*[@id="APjFqb"]'
+            sleep(3)
+            id_elem = '//*[@id="APjFqb"]'
 
-        elem = driver.find_element(By.XPATH, input_search)
-        elem.clear()
-        elem.send_keys("youtube")
-        elem.send_keys(Keys.ENTER)
+            elem_search = self.Driver.find_element(By.XPATH, id_elem)
+            elem_search.clear()
+            elem_search.send_keys("youtube")
+            elem_search.send_keys(Keys.ENTER)
 
-    except Exception as e:
-        print(e)
+        except Exception as e:
+            print(e)
 
 if __name__ == '__main__':
-    main()
+    Simple = Simple()
+    Simple.init()
